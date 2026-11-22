@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fondo: #f7ecea;
+    --rosa: #c98a8a;
+    --texto: #6b3f45;
+    --acento: #b5555f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .seccion {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,.55), transparent 55%),
+      radial-gradient(circle at 80% 80%, rgba(201,138,138,.25), transparent 60%),
+      var(--fondo);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+  .seccion.visible { opacity: 1; transform: none; }
+  .tarjeta {
+    background: #fdf6f5;
+    border: 1px solid var(--rosa);
+    border-radius: 28px;
+    padding: 36px 26px;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 12px 40px rgba(107,63,69,.12);
+  }
+  .monograma {
+    font-family: "Great Vibes", cursive;
+    font-size: 96px;
+    line-height: 1;
+    color: var(--acento);
+    text-shadow: 0 2px 0 rgba(255,255,255,.7);
+  }
+  .logo { max-width: 120px; margin-bottom: 16px; }
+  .pequeno {
+    font-family: "Montserrat", sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin: 8px 0;
+  }
+  .nombre {
+    font-family: "Great Vibes", cursive;
+    font-size: 52px;
+    line-height: 1.1;
+    color: var(--acento);
+    margin: 10px 0;
+  }
+  .texto { font-size: 20px; line-height: 1.5; margin: 8px 0; }
+  .separador { width: 60px; height: 1px; background: var(--rosa); margin: 18px auto; }
+  .contador {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  .contador div { min-width: 60px; }
+  .contador span {
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--acento);
+  }
+  .contador small {
+    font-family: "Montserrat", sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .boton {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 14px 26px;
+    background: var(--acento);
+    color: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .boton.secundario { background: transparent; color: var(--acento); border: 1px solid var(--acento); }
+  .oculto { display: none !important; }
+</style>
+</head>
+<body>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN — solo edita los valores de este bloque.
+   Los campos vacíos ("") se ocultan automáticamente en la página.
+   ===================================================================== */
+const INVITACION = {
+  // Texto general
+  tipoEvento: "Mis XV Años",          // Ej: "Mis XV Años", "Boda", "Bautizo"
+  festejada: "Nombre de la festejada",  // Nombre que aparece en grande
+  textoIntro: "Acompáñame a celebrar",
+
+  // Fecha y hora
+  fecha: "",                          // Formato ISO para la cuenta regresiva. Ej: "2027-01-16T20:00:00-05:00"
+  fechaTexto: "Fecha por confirmar",  // Como se muestra. Ej: "Sábado 16 de enero de 2027"
+  horaTexto: "",                      // Ej: "8:00 PM"
+
+  // Padres / anfitriones
+  padres: "",                         // Ej: "Mateo Valenzuela Ríos & Sofía Benítez Cordero"
+  textoPadres: "En compañía de Dios y",
+
+  // Lugar
+  lugar: "Lugar por confirmar",       // Ej: "Jardín & Casona Los Olivos"
+  direccion: "",                      // Ej: "Navolato, Sinaloa"
+  urlMapa: "",                        // Enlace de Google Maps (opcional)
+
+  // Recepción y vestimenta (opcional)
+  recepcionHora: "",                  // Ej: "08:00 PM"
+  codigoVestimenta: "",               // Ej: "Formal"
+  notaFinal: "",                      // Ej: "Favor de confirmar antes del 1 de enero"
+
+  // Confirmación de asistencia
+  urlConfirmacion: "",                // Enlace a tu Google Form o formulario
+
+  // Logo o monograma
+  logoUrl: "",                        // Enlace de imagen. Si está vacío, se usan las iniciales.
+  monograma: "",                      // Iniciales. Si está vacío, se generan con la festejada
+
+  // Colores (formato hexadecimal)
+  colores: {
+    fondo: "#f7ecea",
+    rosa: "#c98a8a",
+    texto: "#6b3f45",
+    acento: "#b5555f"
+  },
+
+  // Invitado personalizado: si el enlace termina en ?invitado=Nombre, lo muestra
+  mostrarInvitado: true
+};
+/* ===================================================================== */
+
+// ---------- Lógica (no necesitas editar esta parte) ----------
+document.addEventListener("DOMContentLoaded", function () {
+  const c = INVITACION;
+  const root = document.documentElement.style;
+  root.setProperty("--fondo", c.colores.fondo);
+  root.setProperty("--rosa", c.colores.rosa);
+  root.setProperty("--texto", c.colores.texto);
+  root.setProperty("--acento", c.colores.acento);
+
+  const $ = (id) => document.getElementById(id);
+  const ocultarVacio = (id, valor) => {
+    const el = $(id);
+    if (!el) return;
+    if (!valor) el.classList.add("oculto");
+    else el.textContent = valor;
+  };
+
+  // Logo o monograma
+  const iniciales = c.monograma || c.festejada.split(" ").filter(Boolean).slice(0, 2).map(p => p[0]).join("").toUpperCase();
+  if (c.logoUrl) {
+    $("logo").src = c.logoUrl;
+    $("monograma").classList.add("oculto");
+  } else {
+    $("logo").classList.add("oculto");
+    $("monograma").textContent = iniciales;
+  }
+
+  ocultarVacio("tipo", c.tipoEvento);
+  ocultarVacio("intro", c.textoIntro);
+  ocultarVacio("festejada", c.festejada);
+  ocultarVacio("fechaTexto", c.fechaTexto);
+  ocultarVacio("horaTexto", c.horaTexto);
+  ocultarVacio("textoPadres", c.padres ? c.textoPadres : "");
+  ocultarVacio("padres", c.padres);
+  ocultarVacio("lugar", c.lugar);
+  ocultarVacio("direccion", c.direccion);
+  ocultarVacio("recepcionHora", c.recepcionHora);
+  ocultarVacio("codigoVestimenta", c.codigoVestimenta);
+  ocultarVacio("notaFinal", c.notaFinal);
+
+  if (c.urlMapa) $("btnMapa").href = c.urlMapa; else $("btnMapa").classList.add("oculto");
+  if (c.urlConfirmacion) $("btnConfirmar").href = c.urlConfirmacion; else $("btnConfirmar").classList.add("oculto");
+
+  // Invitado personalizado
+  const params = new URLSearchParams(window.location.search);
+  const invitado = params.get("invitado");
+  if (c.mostrarInvitado && invitado) {
+    $("invitado").textContent = "Querido(a) " + invitado;
+  } else {
+    $("invitado").classList.add("oculto");
+  }
+
+  // Cuenta regresiva
+  const bloqueCuenta = $("cuenta");
+  if (c.fecha) {
+    const destino = new Date(c.fecha).getTime();
+    const actualizar = () => {
+      const diff = destino - Date.now();
+      if (diff <= 0) {
+        bloqueCuenta.innerHTML = "<p class='texto'>¡Llegó el gran día!</p>";
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor(diff / 3600000) % 24;
+      const m = Math.floor(diff / 60000) % 60;
+      const s = Math.floor(diff / 1000) % 60;
+      $("dias").textContent = String(d).padStart(2, "0");
+      $("horas").textContent = String(h).padStart(2, "0");
+      $("minutos").textContent = String(m).padStart(2, "0");
+      $("segundos").textContent = String(s).padStart(2, "0");
+    };
+    actualizar();
+    setInterval(actualizar, 1000);
+  } else {
+    bloqueCuenta.classList.add("oculto");
+  }
+
+  // Animación de aparición al hacer scroll
+  const secciones = document.querySelectorAll(".seccion");
+  const obs = new IntersectionObserver((entradas) => {
+    entradas.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
+  }, { threshold: 0.2 });
+  secciones.forEach(s => obs.observe(s));
+  // Muestra la primera sección de inmediato
+  secciones[0].classList.add("visible");
+});
+</script>
+
+<!-- 1. PORTADA -->
+<section class="seccion">
+  <div class="tarjeta">
+    <img id="logo" class="logo" alt="Logo" src="">
+    <div id="monograma" class="monograma"></div>
+    <p id="tipo" class="pequeno"></p>
+    <p id="intro" class="texto"></p>
+    <h1 id="festejada" class="nombre"></h1>
+    <p id="invitado" class="texto"></p>
+  </div>
+</section>
+
+<!-- 2. PADRES -->
+<section class="seccion">
+  <div class="tarjeta">
+    <p id="textoPadres" class="texto"></p>
+    <p id="padres" class="nombre" style="font-size:36px"></p>
+  </div>
+</section>
+
+<!-- 3. FECHA Y CUENTA REGRESIVA -->
+<section class="seccion">
+  <div class="tarjeta">
+    <p class="pequeno">Fecha</p>
+    <p id="fechaTexto" class="nombre" style="font-size:36px"></p>
+    <p id="horaTexto" class="texto"></p>
+    <div id="cuenta">
+      <div class="separador"></div>
+      <div class="contador">
+        <div><span id="dias">--</span><small>Días</small></div>
+        <div><span id="horas">--</span><small>Horas</small></div>
+        <div><span id="minutos">--</span><small>Min</small></div>
+        <div><span id="segundos">--</span><small>Seg</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. LUGAR -->
+<section class="seccion">
+  <div class="tarjeta">
+    <p class="pequeno">Lugar</p>
+    <h2 id="lugar" class="nombre" style="font-size:38px"></h2>
+    <p id="direccion" class="texto"></p>
+    <p id="recepcionHora" class="texto"></p>
+    <p id="codigoVestimenta" class="texto"></p>
+    <a id="btnMapa" class="boton secundario" href="#" target="_blank" rel="noopener">Ver ubicación</a>
+  </div>
+</section>
+
+<!-- 5. CONFIRMACIÓN -->
+<section class="seccion">
+  <div class="tarjeta">
+    <p class="texto">Confirma tu asistencia</p>
+    <p id="notaFinal" class="texto"></p>
+    <a id="btnConfirmar" class="boton" href="#" target="_blank" rel="noopener">Confirmar asistencia</a>
+  </div>
+</section>
+
+</body>
+</html>
