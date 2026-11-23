@@ -755,9 +755,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const audio = $("musica");
     const boton = $("btnMusica");
     audio.src = c.musicaUrl;
-    audio.volume = 0.6;
+    audio.volume = 0;
     boton.classList.remove("oculto");
-    const sonar = () => audio.play().then(() => boton.classList.add("sonando")).catch(() => {});
+    // Sube el volumen poco a poco, para que empiece suave
+    const subirVolumen = () => {
+      let v = 0;
+      const t = setInterval(() => {
+        v += 0.01;
+        if (v >= 0.35) { audio.volume = 0.35; clearInterval(t); }
+        else audio.volume = v;
+      }, 150);
+    };
+    const sonar = () => {
+      if (!audio.paused) return;
+      audio.play().then(() => { boton.classList.add("sonando"); subirVolumen(); }).catch(() => {});
+    };
     sonar();
     ["pointerdown", "keydown", "touchstart", "wheel"].forEach(ev =>
       document.addEventListener(ev, sonar, { once: true, passive: true })
