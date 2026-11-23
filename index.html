@@ -398,19 +398,19 @@ const INVITACION = {
   fechaTexto: "Lunes 21 de diciembre de 2026",
   horaTexto: "2:00 PM",
 
-  // Padres (opcional: si está vacío, la sección no aparece)
+  // Padres que invitan (cambia el texto de "padres" por los nombres reales)
   textoPadres: "Con la bendición de mis padres",
-  padres: "",                             // Ej: "Nombre del papá & Nombre de la mamá"
+  padres: "Nombres de los papás que invitan",
 
   // Lugar
-  lugar: "Lugar por confirmar",
-  direccion: "",                          // Ej: "Navolato, Sinaloa"
-  ubicacionUrl: "",                       // Opcional: enlace exacto de Google Maps
+  lugar: "Santo Trago",
+  direccion: "Av. Tsafiqui, Santo Domingo",
+  ubicacionUrl: "https://maps.app.goo.gl/KaAvA97MVAyTXR1m7",  // Enlace exacto de Google Maps
   codigoVestimenta: "Formal",
 
   // Confirmación de asistencia
   fechaLimiteConfirmacion: "",            // Ej: "Confirma antes del 1 de diciembre de 2026"
-  whatsappNumero: "",                     // Número con código de país, sin + ni espacios. Ej: "593999999999"
+  whatsappNumero: "593995460306",         // Número con código de país, sin + ni espacios
   mensajeWhatsapp: "Hola, confirmo mi asistencia a los XV años de Ivanna Roshelle",
 
   // Música de fondo (archivo .mp3 subido al mismo repositorio, ej: "musica.mp3")
@@ -460,7 +460,6 @@ document.addEventListener("DOMContentLoaded", function () {
   mostrarTexto("horaTexto", c.horaTexto);
   mostrarTexto("textoPadres", c.padres ? c.textoPadres : "");
   mostrarTexto("padres", c.padres);
-  if (!c.padres) $("seccionPadres").classList.add("oculto");
   mostrarTexto("lugar", c.lugar);
   mostrarTexto("direccion", c.direccion);
   mostrarTexto("codigoVestimenta", c.codigoVestimenta ? "Código de vestimenta: " + c.codigoVestimenta : "");
@@ -604,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </section>
 
-<!-- 2. PADRES (se oculta si no hay texto en padres) -->
+<!-- 2. PADRES QUE INVITAN -->
 <section class="seccion" id="seccionPadres">
   <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
   <div class="flores br"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
