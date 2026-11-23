@@ -107,10 +107,50 @@
     font-family: "Great Vibes", cursive;
     font-size: 64px;
     line-height: 1.05;
-    color: var(--rosa-intenso);
     margin: 6px 0;
-    text-shadow: 0 2px 0 rgba(255,255,255,.8);
+    background: linear-gradient(100deg, var(--rosa-intenso) 0%, var(--rosa-intenso) 35%, #e9cf9a 50%, var(--rosa-intenso) 65%, var(--rosa-intenso) 100%);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: brillo 5s linear infinite;
   }
+  @keyframes brillo { from { background-position: 0% center; } to { background-position: 300% center; } }
+
+  /* ---------- Animaciones de portada ---------- */
+  .letra {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(18px) scale(.8);
+    animation: aparecer .9s cubic-bezier(.2,.7,.2,1) forwards;
+    animation-delay: calc(var(--i) * 70ms + 600ms);
+  }
+  @keyframes aparecer { to { opacity: 1; transform: none; } }
+  .monograma-txt {
+    animation: entrada-monograma 1.6s cubic-bezier(.2,.7,.2,1) both;
+  }
+  @keyframes entrada-monograma {
+    from { opacity: 0; transform: scale(.4) rotate(-12deg); }
+    to   { opacity: 1; transform: none; }
+  }
+  .destello {
+    position: absolute;
+    z-index: 3;
+    color: var(--dorado);
+    font-size: 16px;
+    pointer-events: none;
+    animation: titilar 3s ease-in-out infinite;
+  }
+  @keyframes titilar {
+    0%, 100% { opacity: 0; transform: scale(.5); }
+    50%      { opacity: 1; transform: scale(1.15); }
+  }
+  .d1 { top: 12%; left: 10%; animation-delay: 0s; }
+  .d2 { top: 20%; right: 12%; animation-delay: .8s; font-size: 12px; }
+  .d3 { top: 46%; left: 6%; animation-delay: 1.6s; font-size: 20px; }
+  .d4 { top: 62%; right: 8%; animation-delay: 2.2s; }
+  .d5 { bottom: 18%; left: 18%; animation-delay: 1.2s; font-size: 12px; }
+  .d6 { bottom: 12%; right: 20%; animation-delay: 2.6s; font-size: 18px; }
   .nombre-script {
     font-family: "Great Vibes", cursive;
     font-size: 50px;
@@ -338,7 +378,8 @@
   .oculto { display: none !important; }
 
   @media (prefers-reduced-motion: reduce) {
-    .flores, .musica.sonando { animation: none; }
+    .flores, .musica.sonando, .destello, .titulo-script, .monograma-txt { animation: none; }
+    .letra { animation: none; opacity: 1; transform: none; }
     .seccion { transition: none; }
   }
   @media (max-width: 380px) {
@@ -454,6 +495,18 @@ document.addEventListener("DOMContentLoaded", function () {
   mostrarTexto("tipo", c.tipoEvento);
   mostrarTexto("intro", c.textoIntro);
   mostrarTexto("nombre", c.nombre);
+  // Letra por letra para la animación de entrada
+  if (c.nombre) {
+    const elNombre = $("nombre");
+    elNombre.textContent = "";
+    [...c.nombre].forEach((ch, i) => {
+      const s = document.createElement("span");
+      s.className = "letra";
+      s.style.setProperty("--i", i);
+      s.textContent = ch === " " ? " " : ch;
+      elNombre.appendChild(s);
+    });
+  }
   mostrarTexto("apellidos", c.apellidos);
   mostrarTexto("fechaTextoPortada", c.fechaTexto);
   mostrarTexto("fechaTexto", c.fechaTexto);
@@ -585,6 +638,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- 1. PORTADA -->
 <section class="seccion">
+  <span class="destello d1">✦</span>
+  <span class="destello d2">✦</span>
+  <span class="destello d3">✧</span>
+  <span class="destello d4">✦</span>
+  <span class="destello d5">✧</span>
+  <span class="destello d6">✦</span>
   <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#hoja" x="20" y="60" width="40" height="60" transform="rotate(-60 40 90)" style="color:#9bb394"/><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#flor" x="70" y="40" width="50" height="50" style="color:#f1d9d6"/><use href="#capullo" x="40" y="80" width="30" height="45" transform="rotate(20 55 100)" style="color:#b5656b"/></svg></div>
   <div class="flores tr"><svg viewBox="0 0 200 200"><use href="#hoja" x="20" y="60" width="40" height="60" transform="rotate(-60 40 90)" style="color:#9bb394"/><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#flor" x="70" y="40" width="50" height="50" style="color:#f1d9d6"/><use href="#capullo" x="40" y="80" width="30" height="45" transform="rotate(20 55 100)" style="color:#b5656b"/></svg></div>
   <div class="flores bl"><svg viewBox="0 0 200 200"><use href="#hoja" x="20" y="60" width="40" height="60" transform="rotate(-60 40 90)" style="color:#9bb394"/><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#flor" x="70" y="40" width="50" height="50" style="color:#f1d9d6"/><use href="#capullo" x="40" y="80" width="30" height="45" transform="rotate(20 55 100)" style="color:#b5656b"/></svg></div>
