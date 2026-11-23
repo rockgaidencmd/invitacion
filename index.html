@@ -379,6 +379,49 @@
   }
   .oculto { display: none !important; }
 
+  /* ---------- Imágenes florales ---------- */
+  .flor-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 10px rgba(90,58,64,.2));
+  }
+  .flores.tl .flor-img { transform: scaleY(-1); }
+  .flores.tr .flor-img { transform: scaleY(-1); }
+  .flores.br .flor-img { transform: scaleX(-1); }
+  .ramo-h {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 6px auto 0;
+    filter: drop-shadow(0 6px 8px rgba(90,58,64,.2));
+  }
+
+  /* ---------- Segunda mariposa ---------- */
+  .mariposa2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 90px;
+    height: 72px;
+    z-index: 5;
+    pointer-events: none;
+    transition: transform .6s ease-out;
+    will-change: transform;
+  }
+  .mariposa2 svg { width: 100%; height: 100%; filter: drop-shadow(0 5px 6px rgba(20,60,64,.35)); }
+  .ala2 {
+    transform-box: view-box;
+    transform-origin: 50px 40px;
+    animation: aletear2 .65s ease-in-out infinite alternate;
+  }
+  @keyframes aletear2 {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(.3); }
+  }
+
+
   /* ---------- Mariposa ---------- */
   .mariposa {
     position: fixed;
@@ -405,7 +448,7 @@
   @media (prefers-reduced-motion: reduce) {
     .flores, .musica.sonando, .destello, .titulo-script, .monograma-txt { animation: none; }
     .letra { animation: none; opacity: 1; transform: none; }
-    .ala { animation: none; }
+    .ala, .ala2 { animation: none; }
     .seccion { transition: none; }
   }
   @media (max-width: 380px) {
@@ -485,6 +528,9 @@
       <path d="M-14 0 Q-14 -14 0 -14 Q14 -14 14 0 Q14 12 0 12 Q-9 12 -9 3 Q-9 -6 0 -6" stroke="#b5656b" stroke-opacity=".45" stroke-width="1.3" fill="none"/>
       <circle r="4" fill="#c97f82" opacity=".6"/>
     </symbol>
+    <radialGradient id="gTeal" cx="40%" cy="35%" r="75%">
+      <stop offset="0" stop-color="#b8f0e6"/><stop offset=".45" stop-color="#3fa7a4"/><stop offset="1" stop-color="#15494f"/>
+    </radialGradient>
     <filter id="sombra" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#5a3a40" flood-opacity=".3"/>
     </filter>
@@ -561,6 +607,33 @@
     <path d="M39 20 Q34 10 28 8 M41 20 Q46 10 52 8" stroke="#5a3a40" stroke-width=".8" fill="none"/>
     <circle cx="28" cy="8" r="1.4" fill="#c9a46a"/>
     <circle cx="52" cy="8" r="1.4" fill="#c9a46a"/>
+  </svg>
+</div>
+
+<!-- Segunda mariposa, en turquesa y dorado para contrastar con las flores -->
+<div id="mariposa2" class="mariposa2" aria-hidden="true">
+  <svg viewBox="0 0 100 80">
+    <g class="ala2">
+      <path d="M50 40 C38 8 6 0 4 22 C2 36 24 46 50 40Z" fill="url(#gTeal)" stroke="#124a50" stroke-width=".6"/>
+      <path d="M50 42 C40 50 20 50 16 64 C13 76 34 74 50 46Z" fill="url(#gTeal)" stroke="#124a50" stroke-width=".6"/>
+      <path d="M4 22 C2 36 24 46 50 40" fill="none" stroke="#f2c46d" stroke-width="1.6" stroke-dasharray="1.5 2.5"/>
+      <path d="M50 40 C36 30 20 24 8 22 M50 40 C40 32 28 30 20 34" stroke="#0f3d43" stroke-width=".4" fill="none" opacity=".55"/>
+      <circle cx="22" cy="30" r="4.5" fill="#f2c46d"/><circle cx="22" cy="30" r="2.6" fill="#15494f"/><circle cx="21" cy="29" r=".8" fill="#fff"/>
+      <circle cx="30" cy="62" r="2.6" fill="#f2c46d"/><circle cx="30" cy="62" r="1.2" fill="#15494f"/>
+    </g>
+    <g class="ala2">
+      <path d="M50 40 C62 8 94 0 96 22 C98 36 76 46 50 40Z" fill="url(#gTeal)" stroke="#124a50" stroke-width=".6"/>
+      <path d="M50 42 C60 50 80 50 84 64 C87 76 66 74 50 46Z" fill="url(#gTeal)" stroke="#124a50" stroke-width=".6"/>
+      <path d="M96 22 C98 36 76 46 50 40" fill="none" stroke="#f2c46d" stroke-width="1.6" stroke-dasharray="1.5 2.5"/>
+      <path d="M50 40 C64 30 80 24 92 22 M50 40 C60 32 72 30 80 34" stroke="#0f3d43" stroke-width=".4" fill="none" opacity=".55"/>
+      <circle cx="78" cy="30" r="4.5" fill="#f2c46d"/><circle cx="78" cy="30" r="2.6" fill="#15494f"/><circle cx="79" cy="29" r=".8" fill="#fff"/>
+      <circle cx="70" cy="62" r="2.6" fill="#f2c46d"/><circle cx="70" cy="62" r="1.2" fill="#15494f"/>
+    </g>
+    <ellipse cx="50" cy="42" rx="2.6" ry="15" fill="#1d3f44"/>
+    <circle cx="50" cy="26" r="3" fill="#1d3f44"/>
+    <path d="M48.5 24 Q44 12 36 8 M51.5 24 Q56 12 64 8" stroke="#1d3f44" stroke-width=".7" fill="none"/>
+    <circle cx="36" cy="8" r="1.3" fill="#f2c46d"/>
+    <circle cx="64" cy="8" r="1.3" fill="#f2c46d"/>
   </svg>
 </div>
 
@@ -802,6 +875,23 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("resize", moverMariposa);
   moverMariposa();
 
+  const mariposa2 = $("mariposa2");
+  let xAnterior2 = null;
+  let direccion2 = 1;
+  function moverMariposa2() {
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const p = Math.min(1, Math.max(0, window.scrollY / max));
+    const W = window.innerWidth, H = window.innerHeight;
+    const x = (W - 90) * (0.5 + 0.45 * Math.cos(p * Math.PI * 4 + 0.8));
+    const y = (H - 72) * (0.3 + 0.55 * (0.5 + 0.5 * Math.cos(p * Math.PI * 2.5)));
+    if (xAnterior2 !== null && Math.abs(x - xAnterior2) > 0.5) direccion2 = x > xAnterior2 ? 1 : -1;
+    xAnterior2 = x;
+    mariposa2.style.transform = "translate3d(" + x + "px, " + y + "px, 0) scaleX(" + direccion2 + ")";
+  }
+  window.addEventListener("scroll", moverMariposa2, { passive: true });
+  window.addEventListener("resize", moverMariposa2);
+  moverMariposa2();
+
   // Aparición al hacer scroll
   const secciones = document.querySelectorAll(".seccion");
   const obs = new IntersectionObserver((entradas) => {
@@ -820,10 +910,10 @@ document.addEventListener("DOMContentLoaded", function () {
   <span class="destello d4">✦</span>
   <span class="destello d5">✧</span>
   <span class="destello d6">✦</span>
-  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores tr"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores bl"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
+  <div class="flores tl"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores tr"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores bl"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores br"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
 
   <div class="marco">
     <div id="monograma" class="monograma-txt"></div>
@@ -840,8 +930,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- 2. PADRES QUE INVITAN -->
 <section class="seccion" id="seccionPadres">
-  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
+  <div class="flores tl"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores br"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
   <div class="marco">
     <p id="textoPadres" class="texto-italica"></p>
     <p id="padres" class="nombre-script" style="font-size:38px"></p>
@@ -850,8 +940,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- 3. FECHA Y CUENTA REGRESIVA -->
 <section class="seccion">
-  <div class="flores tr"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores bl"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
+  <div class="flores tr"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores bl"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
   <div class="marco">
     <p class="pequeno">Fecha</p>
     <p id="fechaTexto" class="fecha-grande"></p>
@@ -871,8 +961,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- 4. LUGAR Y UBICACIÓN (QR) -->
 <section class="seccion">
-  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
+  <div class="flores tl"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores br"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
   <div class="marco">
     <p class="pequeno">Lugar de la celebración</p>
     <h2 id="lugar" class="nombre-script" style="font-size:40px"></h2>
@@ -889,8 +979,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- 5. CONFIRMACIÓN (formulario + QR de WhatsApp) -->
 <section class="seccion">
-  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
+  <div class="flores tl"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores br"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
   <div class="marco">
     <p class="pequeno">Confirma tu asistencia</p>
     <p id="fechaLimite" class="texto-italica"></p>
@@ -931,12 +1021,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- 6. CIERRE -->
 <section class="seccion">
-  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores tr"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores bl"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
-  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#ramo" x="0" y="0" width="200" height="200"/></svg></div>
+  <div class="flores tl"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores tr"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores bl"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
+  <div class="flores br"><img class="flor-img" src="img/esquina.png" alt="" aria-hidden="true"></div>
   <div class="marco">
     <p class="titulo-script" style="font-size:52px">¡Te esperamos!</p>
+    <img class="ramo-h" src="img/ramo-horizontal.png" alt="" aria-hidden="true">
     <div class="separador">✿</div>
     <p class="apellidos" style="font-size:18px">Ivanna Roshelle</p>
     <p class="pie">21 · 12 · 2026</p>
