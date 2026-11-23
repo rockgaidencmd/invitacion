@@ -638,7 +638,7 @@
 </div>
 
 <!-- Música de fondo (se activa solo si configuras musicaUrl) -->
-<audio id="musica" loop preload="none"></audio>
+<audio id="musica" loop preload="auto"></audio>
 <button id="btnMusica" class="musica oculto" aria-label="Activar o pausar música">♪</button>
 
 <script>
@@ -828,20 +828,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const audio = $("musica");
     const boton = $("btnMusica");
     audio.src = c.musicaUrl;
-    audio.volume = 0;
+    audio.volume = 0.02;
     boton.classList.remove("oculto");
     // Sube el volumen poco a poco, para que empiece suave
     const subirVolumen = () => {
-      let v = 0;
+      let v = 0.02;
       const t = setInterval(() => {
         v += 0.01;
         if (v >= 0.35) { audio.volume = 0.35; clearInterval(t); }
         else audio.volume = v;
       }, 150);
     };
+    audio.addEventListener("error", () => { boton.textContent = "!"; boton.title = "No se pudo cargar la música"; });
     const sonar = () => {
       if (!audio.paused) return;
-      audio.play().then(() => { boton.classList.add("sonando"); subirVolumen(); }).catch(() => {});
+      audio.play()
+        .then(() => { boton.textContent = "♪"; boton.classList.add("sonando"); subirVolumen(); })
+        .catch(() => { boton.textContent = "▶"; boton.title = "Toca para escuchar la música"; });
     };
     sonar();
     ["pointerdown", "keydown", "touchstart", "wheel"].forEach(ev =>
