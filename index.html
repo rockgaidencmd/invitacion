@@ -601,6 +601,155 @@ const INVITACION = {
   whatsappNumero: "593995460306",         // Número con código de país, sin + ni espacios
   mensajeWhatsapp: "Hola, confirmo mi asistencia a los XV años de Ivanna Roshelle",
 
+  // Música de fondo (archivo .mp3 subido al mismo repositorio, ej: "musica.mp3")
+  musicaUrl: "musica.mp3",
+
+  // Colores (formato hexadecimal)
+  colores: {
+    fondo: "#fbf5f2",
+    rosa: "#d9a0a0",
+    rosaIntenso: "#b5656b",
+    dorado: "#c9a46a",
+    texto: "#5a3a40"
+  },
+
+  // Invitado personalizado: si el enlace termina en ?invitado=Nombre, lo muestra
+  mostrarInvitado: true
+};
+/* ===================================================================== */
+
+// ---------- Lógica (no necesitas editar esta parte) ----------
+document.addEventListener("DOMContentLoaded", function () {
+  const c = INVITACION;
+  const root = document.documentElement.style;
+  root.setProperty("--fondo", c.colores.fondo);
+  root.setProperty("--rosa", c.colores.rosa);
+  root.setProperty("--rosa-intenso", c.colores.rosaIntenso);
+  root.setProperty("--dorado", c.colores.dorado);
+  root.setProperty("--texto", c.colores.texto);
+
+  const $ = (id) => document.getElementById(id);
+  const mostrarTexto = (id, valor) => {
+    const el = $(id);
+    if (!el) return;
+    if (!valor) el.classList.add("oculto");
+    else el.textContent = valor;
+  };
+
+  // Monograma
+  mostrarTexto("monograma", c.monograma);
+
+  mostrarTexto("tipo", c.tipoEvento);
+  mostrarTexto("intro", c.textoIntro);
+  mostrarTexto("nombre", c.nombre);
+  // Letra por letra para la animación de entrada
+  if (c.nombre) {
+    const elNombre = $("nombre");
+    elNombre.textContent = "";
+    [...c.nombre].forEach((ch, i) => {
+      const s = document.createElement("span");
+      s.className = "letra";
+      s.style.setProperty("--i", i);
+      s.textContent = ch === " " ? " " : ch;
+      elNombre.appendChild(s);
+    });
+  }
+  mostrarTexto("apellidos", c.apellidos);
+  mostrarTexto("fechaTextoPortada", c.fechaTexto);
+  mostrarTexto("fechaTexto", c.fechaTexto);
+  mostrarTexto("horaTexto", c.horaTexto);
+  mostrarTexto("textoPadres", c.padres ? c.textoPadres : "");
+  mostrarTexto("padres", c.padres);
+  mostrarTexto("lugar", c.lugar);
+  mostrarTexto("direccion", c.direccion);
+  mostrarTexto("codigoVestimenta", c.codigoVestimenta ? "Código de vestimenta: " + c.codigoVestimenta : "");
+  mostrarTexto("fechaLimite", c.fechaLimiteConfirmacion);
+
+  // Invitado personalizado
+  const params = new URLSearchParams(window.location.search);
+  const invitado = params.get("invitado");
+  if (c.mostrarInvitado && invitado) {
+    $("invitado").textContent = "Querido(a) " + invitado;
+  } else {
+    $("invitado").classList.add("oculto");
+  }
+
+  // Cuenta regresiva
+  if (c.fecha) {
+    const destino = new Date(c.fecha).getTime();
+    const actualizar = () => {
+      const diff = destino - Date.now();
+      if (diff <= 0) {
+        $("cuenta").innerHTML = "<p class='texto-italica'>¡Llegó el gran día!</p>";
+        return;
+      }
+      $("dias").textContent = String(Math.floor(diff / 86400000)).padStart(2, "0");
+      $("horas").textContent = String(Math.floor(diff / 3600000) % 24).padStart(2, "0");
+      $("minutos").textContent = String(Math.floor(diff / 60000) % 60).padStart(2, "0");
+      $("segundos").textContent = String(Math.floor(diff / 1000) % 60).padStart(2, "0");
+    };
+    actualizar();
+    setInterval(actualizar, 1000);
+  } else {
+    $("cuenta").classList.add("oculto");
+  }
+
+  // QR y enlaces de ubicación y WhatsApp
+  const urlUbicacion = c.ubicacionUrl ||
+    (c.lugar && !c.lugar.toLowerCase().includes("por confirmar")
+      ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([c.lugar, c.direccion].filter(Boolean).join(", "))
+      : "");
+  const urlWhatsapp = c.whatsappNumero
+    ? "https://wa.me/" + c.whatsappNumero + "?text=" + encodeURIComponent(c.mensajeWhatsapp)
+    : "";
+
+  function pintarQR(canvasId, pendienteId, texto) {
+    const canvas = $(canvasId);
+    const pendiente = $(pendienteId);
+    if (!texto) {
+      canvas.classList.add("oculto");
+      pendiente.classList.remove("oculto");
+      return;
+    }
+    pendiente.classList.add("oculto");
+    canvas.classList.remove("oculto");
+  }
+  pintarQR("qrUbicacion", "qrUbicacionPendiente", urlUbicacion);
+  pintarQR("qrWhatsapp", "qrWhatsappPendiente", urlWhatsapp);
+  if (urlUbicacion) $("btnMapa").href = urlUbicacion; else $("btnMapa").classList.add("oculto");
+
+  // Formulario de confirmación: arma el mensaje y lo envía por WhatsApp
+  const selAdultos = $("fAdultos");
+  const selNinos = $("fNinos");
+  for (let i = 1; i <= 10; i++) selAdultos.add(new Option(i, i));
+  for (let i = 0; i <= 10; i++) selNinos.add(new Option(i, i));
+
+  const mostrarNumeros = () => {
+    const si = document.querySelector('input[name="asiste"][value="si"]').checked;
+    $("camposPersonas").classList.toggle("oculto", !si);
+  };
+  document.querySelectorAll('input[name="asiste"]').forEach(r => r.addEventListener("change", mostrarNumeros));
+  mostrarNumeros();
+
+  if (!urlWhatsapp) {
+    $("btnEnviar").disabled = true;
+    $("fError").textContent = "Formulario pendiente de configurar.";
+  }
+
+  $("btnEnviar").addEventListener("click", function () {
+    const nombre = $("fNombre").value.trim();
+    const eleccion = document.querySelector('input[name="asiste"]:checked');
+    if (!nombre) { $("fError").textContent = "Por favor escribe tu nombre."; return; }
+    if (!eleccion) { $("fError").textContent = "Por favor elige si podrás asistir."; return; }
+    const asiste = eleccion.value === "si";
+    let msg = c.mensajeWhatsapp + "\n\nNombre: " + nombre + "\nAsistencia: " + (asiste ? "Sí, ahí estaremos" : "No podré asistir");
+    if (asiste) {
+      msg += "\nAdultos: " + selAdultos.value + "\nNiños: " + selNinos.value;
+    }
+    $("fError").textContent = "";
+    window.open("https://wa.me/" + c.whatsappNumero + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  });
+
   // Música de fondo: intenta sonar al abrir; si el navegador lo bloquea, suena con el primer toque
   if (c.musicaUrl) {
     const audio = $("musica");
