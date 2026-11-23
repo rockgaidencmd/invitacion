@@ -82,14 +82,13 @@
   }
   .flores svg { width: 100%; height: 100%; }
   .flores.tl { top: -20px; left: -30px; }
-  .flores.tr { top: -20px; right: -30px; transform: scaleX(-1); animation-delay: -3s; }
-  .flores.bl { bottom: -30px; left: -30px; transform: scaleY(-1); animation-delay: -6s; }
-  .flores.br { bottom: -30px; right: -30px; transform: scale(-1,-1); animation-delay: -1.5s; }
+  .flores.tr { top: -20px; right: -30px; animation-name: balanceo-tr; animation-delay: -3s; }
+  .flores.bl { bottom: -30px; left: -30px; animation-delay: -6s; }
+  .flores.br { bottom: -30px; right: -30px; animation-delay: -1.5s; }
   @keyframes balanceo {
     from { transform: rotate(-2deg); }
     to   { transform: rotate(3deg); }
   }
-  .flores.tr { animation-name: balanceo-tr; }
   @keyframes balanceo-tr {
     from { transform: scaleX(-1) rotate(-2deg); }
     to   { transform: scaleX(-1) rotate(3deg); }
@@ -187,7 +186,7 @@
     color: var(--texto);
   }
 
-  /* ---------- QR y botones ---------- */
+  /* ---------- QR ---------- */
   .qr-bloque { margin-top: 18px; }
   .qr-bloque canvas {
     border: 1px solid var(--blush);
@@ -220,12 +219,68 @@
     margin-top: 10px;
     color: var(--texto);
   }
+
+  /* ---------- Formulario ---------- */
+  .formulario { text-align: left; margin-top: 18px; }
+  .campo { margin: 14px 0; }
+  .campo label, .campo .etiqueta {
+    display: block;
+    font-family: "Montserrat", sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--texto);
+    margin-bottom: 6px;
+  }
+  .campo input[type="text"], .campo select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--rosa);
+    border-radius: 10px;
+    background: #fff;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 18px;
+    color: var(--texto);
+  }
+  .opciones { display: flex; gap: 8px; }
+  .opciones label {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+    padding: 12px 6px;
+    border: 1px solid var(--rosa);
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    font-family: "Montserrat", sans-serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--texto);
+  }
+  .opciones input { display: none; }
+  .opciones input:checked + span { color: #fff; }
+  .opciones label:has(input:checked) {
+    background: var(--rosa-intenso);
+    border-color: var(--rosa-intenso);
+    color: #fff;
+  }
+  .fila-dos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .error {
+    font-family: "Montserrat", sans-serif;
+    font-size: 11px;
+    color: var(--rosa-intenso);
+    min-height: 16px;
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  /* ---------- Botones ---------- */
   .boton {
     display: inline-block;
     margin-top: 16px;
     padding: 14px 28px;
     background: var(--rosa-intenso);
     color: #fff;
+    border: none;
     border-radius: 999px;
     text-decoration: none;
     font-family: "Montserrat", sans-serif;
@@ -233,13 +288,38 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     box-shadow: 0 8px 20px rgba(181,101,107,.3);
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
   }
   .boton.secundario {
     background: transparent;
     color: var(--rosa-intenso);
     border: 1px solid var(--rosa-intenso);
     box-shadow: none;
+    width: auto;
   }
+  .boton:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* ---------- Música ---------- */
+  .musica {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 10;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1px solid var(--dorado);
+    background: #fff;
+    color: var(--rosa-intenso);
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(90,58,64,.2);
+  }
+  .musica.sonando { animation: giro 4s linear infinite; }
+  @keyframes giro { to { transform: rotate(360deg); } }
+
   .invitado {
     font-family: "Montserrat", sans-serif;
     font-size: 12px;
@@ -258,7 +338,7 @@
   .oculto { display: none !important; }
 
   @media (prefers-reduced-motion: reduce) {
-    .flores { animation: none; }
+    .flores, .musica.sonando { animation: none; }
     .seccion { transition: none; }
   }
   @media (max-width: 380px) {
@@ -270,7 +350,7 @@
 </head>
 <body>
 
-<!-- Ornamentos reutilizables (flor, hoja y monograma) -->
+<!-- Ornamentos reutilizables (flor, capullo y hoja) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="flor" viewBox="-50 -50 100 100">
@@ -296,6 +376,10 @@
   </defs>
 </svg>
 
+<!-- Música de fondo (se activa solo si configuras musicaUrl) -->
+<audio id="musica" loop preload="none"></audio>
+<button id="btnMusica" class="musica oculto" aria-label="Activar o pausar música">♪</button>
+
 <script>
 /* =====================================================================
    CONFIGURACIÓN — solo edita los valores de este bloque.
@@ -304,30 +388,33 @@
 const INVITACION = {
   // Texto general
   tipoEvento: "Mis XV Años",
-  nombre: "Ivanna Roshelle",              // Se muestra en script
-  apellidos: "Fajardo Murillo",           // Se muestra en mayúsculas
+  nombre: "Ivanna Roshelle",
+  apellidos: "Fajardo Murillo",
   textoIntro: "Con amor y gratitud, te invito a celebrar mis XV años",
-  monograma: "IF",                        // Iniciales del monograma
+  monograma: "IF",
 
   // Fecha y hora
   fecha: "2026-12-21T14:00:00-05:00",     // Cuenta regresiva (zona horaria Ecuador)
   fechaTexto: "Lunes 21 de diciembre de 2026",
   horaTexto: "2:00 PM",
 
-  // Padres (opcional)
+  // Padres (opcional: si está vacío, la sección no aparece)
   textoPadres: "Con la bendición de mis padres",
   padres: "",                             // Ej: "Nombre del papá & Nombre de la mamá"
 
   // Lugar
-  lugar: "Lugar por confirmar",           // Ej: "Jardín & Casona Los Olivos"
+  lugar: "Lugar por confirmar",
   direccion: "",                          // Ej: "Navolato, Sinaloa"
-  ubicacionUrl: "",                       // Opcional: enlace exacto de Google Maps. Si está vacío, se busca por lugar y dirección
+  ubicacionUrl: "",                       // Opcional: enlace exacto de Google Maps
   codigoVestimenta: "Formal",
 
   // Confirmación de asistencia
   fechaLimiteConfirmacion: "",            // Ej: "Confirma antes del 1 de diciembre de 2026"
   whatsappNumero: "",                     // Número con código de país, sin + ni espacios. Ej: "593999999999"
   mensajeWhatsapp: "Hola, confirmo mi asistencia a los XV años de Ivanna Roshelle",
+
+  // Música de fondo (archivo .mp3 subido al mismo repositorio, ej: "musica.mp3")
+  musicaUrl: "",
 
   // Colores (formato hexadecimal)
   colores: {
@@ -362,8 +449,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Monograma
-  $("monograma").textContent = c.monograma || "";
-  $("monograma").classList.toggle("oculto", !c.monograma);
+  mostrarTexto("monograma", c.monograma);
 
   mostrarTexto("tipo", c.tipoEvento);
   mostrarTexto("intro", c.textoIntro);
@@ -374,6 +460,7 @@ document.addEventListener("DOMContentLoaded", function () {
   mostrarTexto("horaTexto", c.horaTexto);
   mostrarTexto("textoPadres", c.padres ? c.textoPadres : "");
   mostrarTexto("padres", c.padres);
+  if (!c.padres) $("seccionPadres").classList.add("oculto");
   mostrarTexto("lugar", c.lugar);
   mostrarTexto("direccion", c.direccion);
   mostrarTexto("codigoVestimenta", c.codigoVestimenta ? "Código de vestimenta: " + c.codigoVestimenta : "");
@@ -389,13 +476,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Cuenta regresiva
-  const bloqueCuenta = $("cuenta");
   if (c.fecha) {
     const destino = new Date(c.fecha).getTime();
     const actualizar = () => {
       const diff = destino - Date.now();
       if (diff <= 0) {
-        bloqueCuenta.innerHTML = "<p class='texto-italica'>¡Llegó el gran día!</p>";
+        $("cuenta").innerHTML = "<p class='texto-italica'>¡Llegó el gran día!</p>";
         return;
       }
       $("dias").textContent = String(Math.floor(diff / 86400000)).padStart(2, "0");
@@ -406,21 +492,19 @@ document.addEventListener("DOMContentLoaded", function () {
     actualizar();
     setInterval(actualizar, 1000);
   } else {
-    bloqueCuenta.classList.add("oculto");
+    $("cuenta").classList.add("oculto");
   }
 
-  // QR de ubicación
+  // QR y enlaces de ubicación y WhatsApp
   const urlUbicacion = c.ubicacionUrl ||
     (c.lugar && !c.lugar.toLowerCase().includes("por confirmar")
       ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([c.lugar, c.direccion].filter(Boolean).join(", "))
       : "");
-
-  // QR de WhatsApp
   const urlWhatsapp = c.whatsappNumero
     ? "https://wa.me/" + c.whatsappNumero + "?text=" + encodeURIComponent(c.mensajeWhatsapp)
     : "";
 
-  function pintarQR(canvasId, pendienteId, texto, enlaceId, enlaceUrl) {
+  function pintarQR(canvasId, pendienteId, texto) {
     const canvas = $(canvasId);
     const pendiente = $(pendienteId);
     if (!texto) {
@@ -437,15 +521,58 @@ document.addEventListener("DOMContentLoaded", function () {
         color: { dark: c.colores.texto, light: "#ffffff" }
       }, function (err) { if (err) console.error(err); });
     }
-    if (enlaceId) {
-      $(enlaceId).href = enlaceUrl;
-    }
+  }
+  pintarQR("qrUbicacion", "qrUbicacionPendiente", urlUbicacion);
+  pintarQR("qrWhatsapp", "qrWhatsappPendiente", urlWhatsapp);
+  if (urlUbicacion) $("btnMapa").href = urlUbicacion; else $("btnMapa").classList.add("oculto");
+
+  // Formulario de confirmación: arma el mensaje y lo envía por WhatsApp
+  const selAdultos = $("fAdultos");
+  const selNinos = $("fNinos");
+  for (let i = 1; i <= 10; i++) selAdultos.add(new Option(i, i));
+  for (let i = 0; i <= 10; i++) selNinos.add(new Option(i, i));
+
+  const mostrarNumeros = () => {
+    const si = document.querySelector('input[name="asiste"][value="si"]').checked;
+    $("camposPersonas").classList.toggle("oculto", !si);
+  };
+  document.querySelectorAll('input[name="asiste"]').forEach(r => r.addEventListener("change", mostrarNumeros));
+  mostrarNumeros();
+
+  if (!urlWhatsapp) {
+    $("btnEnviar").disabled = true;
+    $("fError").textContent = "Formulario pendiente de configurar.";
   }
 
-  pintarQR("qrUbicacion", "qrUbicacionPendiente", urlUbicacion, "btnMapa", urlUbicacion);
-  pintarQR("qrWhatsapp", "qrWhatsappPendiente", urlWhatsapp, "btnWhatsapp", urlWhatsapp);
-  if (!urlUbicacion) $("btnMapa").classList.add("oculto");
-  if (!urlWhatsapp) $("btnWhatsapp").classList.add("oculto");
+  $("btnEnviar").addEventListener("click", function () {
+    const nombre = $("fNombre").value.trim();
+    const eleccion = document.querySelector('input[name="asiste"]:checked');
+    if (!nombre) { $("fError").textContent = "Por favor escribe tu nombre."; return; }
+    if (!eleccion) { $("fError").textContent = "Por favor elige si podrás asistir."; return; }
+    const asiste = eleccion.value === "si";
+    let msg = c.mensajeWhatsapp + "\n\nNombre: " + nombre + "\nAsistencia: " + (asiste ? "Sí, ahí estaremos" : "No podré asistir");
+    if (asiste) {
+      msg += "\nAdultos: " + selAdultos.value + "\nNiños: " + selNinos.value;
+    }
+    $("fError").textContent = "";
+    window.open("https://wa.me/" + c.whatsappNumero + "?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  });
+
+  // Música de fondo
+  if (c.musicaUrl) {
+    const audio = $("musica");
+    const boton = $("btnMusica");
+    audio.src = c.musicaUrl;
+    boton.classList.remove("oculto");
+    boton.addEventListener("click", function () {
+      if (audio.paused) {
+        audio.play().then(() => boton.classList.add("sonando")).catch(() => {});
+      } else {
+        audio.pause();
+        boton.classList.remove("sonando");
+      }
+    });
+  }
 
   // Aparición al hacer scroll
   const secciones = document.querySelectorAll(".seccion");
@@ -465,7 +592,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <div class="flores br"><svg viewBox="0 0 200 200"><use href="#hoja" x="20" y="60" width="40" height="60" transform="rotate(-60 40 90)" style="color:#9bb394"/><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#flor" x="70" y="40" width="50" height="50" style="color:#f1d9d6"/><use href="#capullo" x="40" y="80" width="30" height="45" transform="rotate(20 55 100)" style="color:#b5656b"/></svg></div>
 
   <div class="marco">
-    <div id="monograma" class="monograma-txt oculto"></div>
+    <div id="monograma" class="monograma-txt"></div>
     <p id="tipo" class="pequeno"></p>
     <h1 class="titulo-script">Mis XV Años</h1>
     <p id="intro" class="texto-italica"></p>
@@ -477,8 +604,8 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </section>
 
-<!-- 2. PADRES -->
-<section class="seccion">
+<!-- 2. PADRES (se oculta si no hay texto en padres) -->
+<section class="seccion" id="seccionPadres">
   <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
   <div class="flores br"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
   <div class="marco">
@@ -508,7 +635,7 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </section>
 
-<!-- 4. LUGAR Y UBICACIÓN (QR GPS) -->
+<!-- 4. LUGAR Y UBICACIÓN (QR) -->
 <section class="seccion">
   <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/></svg></div>
   <div class="flores br"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/></svg></div>
@@ -526,20 +653,45 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </section>
 
-<!-- 5. CONFIRMACIÓN (QR WHATSAPP) -->
+<!-- 5. CONFIRMACIÓN (formulario + QR de WhatsApp) -->
 <section class="seccion">
   <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
   <div class="flores br"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
   <div class="marco">
     <p class="pequeno">Confirma tu asistencia</p>
-    <p class="texto">Será un honor contar con tu presencia.</p>
     <p id="fechaLimite" class="texto-italica"></p>
+
+    <div class="formulario">
+      <div class="campo">
+        <label for="fNombre">Nombre o nombre de familia</label>
+        <input id="fNombre" type="text" autocomplete="name" placeholder="Escribe tu nombre">
+      </div>
+      <div class="campo">
+        <span class="etiqueta">¿Podrás asistir?</span>
+        <div class="opciones">
+          <label><input type="radio" name="asiste" value="si" checked><span>Sí, ahí estaremos</span></label>
+          <label><input type="radio" name="asiste" value="no"><span>No podré asistir</span></label>
+        </div>
+      </div>
+      <div id="camposPersonas" class="fila-dos">
+        <div class="campo">
+          <label for="fAdultos">Adultos</label>
+          <select id="fAdultos"></select>
+        </div>
+        <div class="campo">
+          <label for="fNinos">Niños</label>
+          <select id="fNinos"></select>
+        </div>
+      </div>
+      <p id="fError" class="error"></p>
+      <button id="btnEnviar" class="boton" type="button">Enviar confirmación</button>
+    </div>
+
     <div class="qr-bloque">
       <canvas id="qrWhatsapp" class="oculto"></canvas>
       <div id="qrWhatsappPendiente" class="qr-pendiente">QR de WhatsApp<br>pendiente</div>
-      <p class="qr-etiqueta">Escanea para confirmar por WhatsApp</p>
+      <p class="qr-etiqueta">O escanea para confirmar por WhatsApp</p>
     </div>
-    <a id="btnWhatsapp" class="boton" href="#" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
   </div>
 </section>
 
