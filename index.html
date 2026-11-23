@@ -484,6 +484,25 @@
       <path d="M-14 0 Q-14 -14 0 -14 Q14 -14 14 0 Q14 12 0 12 Q-9 12 -9 3 Q-9 -6 0 -6" stroke="#b5656b" stroke-opacity=".45" stroke-width="1.3" fill="none"/>
       <circle r="4" fill="#c97f82" opacity=".6"/>
     </symbol>
+    <symbol id="rosaPapel" viewBox="-50 -50 100 100">
+      <circle cx="3" cy="4" r="38" fill="#5a3a40" opacity=".12"/>
+      <g fill="url(#gRosa)" stroke="#b5656b" stroke-opacity=".35" stroke-width=".8">
+        <ellipse cx="0" cy="-22" rx="22" ry="28"/>
+        <ellipse cx="0" cy="-22" rx="22" ry="28" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-22" rx="22" ry="28" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-22" rx="22" ry="28" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-22" rx="22" ry="28" transform="rotate(288)"/>
+      </g>
+      <g fill="url(#gRosaCentro)" stroke="#b5656b" stroke-opacity=".3" stroke-width=".6">
+        <ellipse cx="0" cy="-12" rx="15" ry="19" transform="rotate(36)"/>
+        <ellipse cx="0" cy="-12" rx="15" ry="19" transform="rotate(108)"/>
+        <ellipse cx="0" cy="-12" rx="15" ry="19" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-12" rx="15" ry="19" transform="rotate(252)"/>
+        <ellipse cx="0" cy="-12" rx="15" ry="19" transform="rotate(324)"/>
+      </g>
+      <path d="M-11 0 Q-11 -11 0 -11 Q11 -11 11 0 Q11 9 0 9 Q-7 9 -7 2 Q-7 -5 0 -5" stroke="#b5656b" stroke-opacity=".5" stroke-width="1.2" fill="none"/>
+      <circle r="3" fill="#c97f82" opacity=".7"/>
+    </symbol>
     <symbol id="ramo" viewBox="0 0 200 200">
       <path d="M6 6 C30 50 60 90 112 124" stroke="#7d9675" stroke-width="2" fill="none"/>
       <path d="M6 6 C22 40 34 74 48 104" stroke="#7d9675" stroke-width="1.5" fill="none"/>
@@ -493,12 +512,13 @@
       <ellipse cx="62" cy="62" rx="9" ry="16" fill="url(#gEucalipto)" transform="rotate(-25 62 62)"/>
       <ellipse cx="104" cy="22" rx="8" ry="14" fill="url(#gEucalipto)" transform="rotate(70 104 22)"/>
       <ellipse cx="84" cy="96" rx="8" ry="14" fill="url(#gEucalipto)" transform="rotate(-60 84 96)"/>
-      <use href="#rosa" x="-16" y="-16" width="64" height="64"/>
-      <use href="#rosa" x="44" y="30" width="52" height="52"/>
-      <use href="#rosa" x="92" y="4" width="36" height="36"/>
-      <use href="#rosa" x="104" y="100" width="34" height="34"/>
+      <use href="#rosaPapel" x="-16" y="-16" width="64" height="64"/>
+      <use href="#rosaPapel" x="44" y="30" width="52" height="52"/>
+      <use href="#rosaPapel" x="92" y="4" width="36" height="36"/>
+      <use href="#rosaPapel" x="104" y="100" width="34" height="34"/>
       <path d="M50 104 L40 136 L52 130 L58 144 L66 110 Z" fill="url(#gCinta)" opacity=".95"/>
       <path d="M50 104 Q62 92 74 104 Q62 116 50 104Z" fill="url(#gCinta)"/>
+      <path d="M150 4 C172 30 128 52 152 82 S172 120 146 146" stroke="url(#gCinta)" stroke-width="7" stroke-linecap="round" fill="none" opacity=".9"/>
       <circle cx="72" cy="72" r="2.5" fill="#fff" opacity=".9"/>
       <circle cx="28" cy="62" r="2" fill="#fff" opacity=".9"/>
       <circle cx="138" cy="72" r="2.5" fill="#fff" opacity=".9"/>
