@@ -3,112 +3,298 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Invitación</title>
+<meta name="description" content="Mis XV Años - Invitación digital">
+<title>Mis XV Años · Ivanna Roshelle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
 <style>
   :root {
-    --fondo: #f7ecea;
-    --rosa: #c98a8a;
-    --texto: #6b3f45;
-    --acento: #b5555f;
+    --fondo: #fbf5f2;
+    --blush: #f1d9d6;
+    --rosa: #d9a0a0;
+    --rosa-intenso: #b5656b;
+    --dorado: #c9a46a;
+    --texto: #5a3a40;
+    --hoja: #9bb394;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
     background: var(--fondo);
     color: var(--texto);
     font-family: "Cormorant Garamond", Georgia, serif;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
+
+  /* ---------- Secciones ---------- */
   .seccion {
+    position: relative;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 48px 24px;
+    padding: 64px 22px;
     text-align: center;
     background:
-      radial-gradient(circle at 20% 20%, rgba(255,255,255,.55), transparent 55%),
-      radial-gradient(circle at 80% 80%, rgba(201,138,138,.25), transparent 60%),
+      radial-gradient(circle at 15% 10%, #ffffff 0%, transparent 45%),
+      radial-gradient(circle at 90% 90%, var(--blush) 0%, transparent 55%),
       var(--fondo);
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(28px);
     transition: opacity 1.2s ease, transform 1.2s ease;
   }
   .seccion.visible { opacity: 1; transform: none; }
-  .tarjeta {
-    background: #fdf6f5;
-    border: 1px solid var(--rosa);
-    border-radius: 28px;
-    padding: 36px 26px;
-    max-width: 360px;
+
+  /* ---------- Marco ---------- */
+  .marco {
+    position: relative;
+    z-index: 2;
+    background: rgba(255,255,255,.72);
+    border: 1px solid var(--dorado);
+    border-radius: 6px;
+    padding: 40px 26px;
+    max-width: 380px;
     width: 100%;
-    box-shadow: 0 12px 40px rgba(107,63,69,.12);
+    box-shadow: 0 18px 48px rgba(90,58,64,.12);
+    backdrop-filter: blur(2px);
   }
-  .monograma {
-    font-family: "Great Vibes", cursive;
-    font-size: 96px;
-    line-height: 1;
-    color: var(--acento);
-    text-shadow: 0 2px 0 rgba(255,255,255,.7);
+  .marco::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(201,164,106,.5);
+    border-radius: 4px;
+    pointer-events: none;
   }
-  .logo { max-width: 120px; margin-bottom: 16px; }
+
+  /* ---------- Flores decorativas ---------- */
+  .flores {
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    pointer-events: none;
+    z-index: 1;
+    animation: balanceo 9s ease-in-out infinite alternate;
+  }
+  .flores svg { width: 100%; height: 100%; }
+  .flores.tl { top: -20px; left: -30px; }
+  .flores.tr { top: -20px; right: -30px; transform: scaleX(-1); animation-delay: -3s; }
+  .flores.bl { bottom: -30px; left: -30px; transform: scaleY(-1); animation-delay: -6s; }
+  .flores.br { bottom: -30px; right: -30px; transform: scale(-1,-1); animation-delay: -1.5s; }
+  @keyframes balanceo {
+    from { transform: rotate(-2deg); }
+    to   { transform: rotate(3deg); }
+  }
+  .flores.tr { animation-name: balanceo-tr; }
+  @keyframes balanceo-tr {
+    from { transform: scaleX(-1) rotate(-2deg); }
+    to   { transform: scaleX(-1) rotate(3deg); }
+  }
+
+  /* ---------- Tipografía ---------- */
   .pequeno {
     font-family: "Montserrat", sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin: 8px 0;
-  }
-  .nombre {
-    font-family: "Great Vibes", cursive;
-    font-size: 52px;
-    line-height: 1.1;
-    color: var(--acento);
+    color: var(--rosa-intenso);
     margin: 10px 0;
   }
-  .texto { font-size: 20px; line-height: 1.5; margin: 8px 0; }
-  .separador { width: 60px; height: 1px; background: var(--rosa); margin: 18px auto; }
-  .contador {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    margin-top: 16px;
+  .titulo-script {
+    font-family: "Great Vibes", cursive;
+    font-size: 64px;
+    line-height: 1.05;
+    color: var(--rosa-intenso);
+    margin: 6px 0;
+    text-shadow: 0 2px 0 rgba(255,255,255,.8);
   }
-  .contador div { min-width: 60px; }
+  .nombre-script {
+    font-family: "Great Vibes", cursive;
+    font-size: 50px;
+    line-height: 1.1;
+    color: var(--texto);
+    margin: 8px 0 2px;
+  }
+  .apellidos {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--texto);
+  }
+  .texto { font-size: 20px; line-height: 1.5; margin: 8px 0; }
+  .texto-italica { font-style: italic; font-size: 21px; line-height: 1.5; margin: 8px 0; }
+  .fecha-grande {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--texto);
+    margin: 6px 0;
+  }
+  .separador {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px auto;
+    color: var(--dorado);
+    font-size: 14px;
+  }
+  .separador::before, .separador::after {
+    content: "";
+    width: 46px;
+    height: 1px;
+    background: var(--dorado);
+  }
+  .monograma-txt {
+    font-family: "Great Vibes", cursive;
+    font-size: 72px;
+    line-height: 1;
+    color: var(--rosa-intenso);
+    margin-bottom: 4px;
+  }
+
+  /* ---------- Cuenta regresiva ---------- */
+  .contador {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .contador div {
+    background: var(--fondo);
+    border: 1px solid var(--blush);
+    border-radius: 10px;
+    padding: 12px 4px 8px;
+  }
   .contador span {
     display: block;
     font-family: "Cormorant Garamond", serif;
-    font-size: 40px;
+    font-size: 38px;
     font-weight: 600;
-    color: var(--acento);
+    color: var(--rosa-intenso);
+    line-height: 1;
   }
   .contador small {
     font-family: "Montserrat", sans-serif;
-    font-size: 9px;
+    font-size: 8px;
     letter-spacing: 2px;
     text-transform: uppercase;
+    color: var(--texto);
+  }
+
+  /* ---------- QR y botones ---------- */
+  .qr-bloque { margin-top: 18px; }
+  .qr-bloque canvas {
+    border: 1px solid var(--blush);
+    border-radius: 8px;
+    padding: 8px;
+    background: #fff;
+    max-width: 100%;
+    height: auto;
+  }
+  .qr-pendiente {
+    width: 170px;
+    height: 170px;
+    margin: 0 auto;
+    border: 1px dashed var(--rosa);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--rosa-intenso);
+    padding: 12px;
+  }
+  .qr-etiqueta {
+    font-family: "Montserrat", sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    color: var(--texto);
   }
   .boton {
     display: inline-block;
-    margin-top: 18px;
-    padding: 14px 26px;
-    background: var(--acento);
+    margin-top: 16px;
+    padding: 14px 28px;
+    background: var(--rosa-intenso);
     color: #fff;
     border-radius: 999px;
     text-decoration: none;
     font-family: "Montserrat", sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 2px;
     text-transform: uppercase;
+    box-shadow: 0 8px 20px rgba(181,101,107,.3);
   }
-  .boton.secundario { background: transparent; color: var(--acento); border: 1px solid var(--acento); }
+  .boton.secundario {
+    background: transparent;
+    color: var(--rosa-intenso);
+    border: 1px solid var(--rosa-intenso);
+    box-shadow: none;
+  }
+  .invitado {
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--rosa-intenso);
+    margin-top: 18px;
+  }
+  .pie {
+    font-family: "Montserrat", sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rosa-intenso);
+    margin-top: 28px;
+  }
   .oculto { display: none !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flores { animation: none; }
+    .seccion { transition: none; }
+  }
+  @media (max-width: 380px) {
+    .titulo-script { font-size: 54px; }
+    .nombre-script { font-size: 42px; }
+    .flores { width: 130px; height: 130px; }
+  }
 </style>
 </head>
 <body>
+
+<!-- Ornamentos reutilizables (flor, hoja y monograma) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="flor" viewBox="-50 -50 100 100">
+      <g fill="currentColor" opacity=".85">
+        <ellipse cx="0" cy="-20" rx="13" ry="22"/>
+        <ellipse cx="0" cy="-20" rx="13" ry="22" transform="rotate(72)"/>
+        <ellipse cx="0" cy="-20" rx="13" ry="22" transform="rotate(144)"/>
+        <ellipse cx="0" cy="-20" rx="13" ry="22" transform="rotate(216)"/>
+        <ellipse cx="0" cy="-20" rx="13" ry="22" transform="rotate(288)"/>
+      </g>
+      <circle r="9" fill="#c9a46a"/>
+      <circle r="4" fill="#fbf5f2"/>
+    </symbol>
+    <symbol id="capullo" viewBox="-20 -30 40 60">
+      <path d="M0 26 C-10 10 -10 -10 0 -24 C10 -10 10 10 0 26Z" fill="currentColor" opacity=".9"/>
+      <path d="M-12 22 C-16 10 -10 2 0 6 C-4 12 -6 18 -12 22Z" fill="#9bb394"/>
+      <path d="M12 22 C16 10 10 2 0 6 C4 12 6 18 12 22Z" fill="#9bb394"/>
+    </symbol>
+    <symbol id="hoja" viewBox="-10 -30 20 40">
+      <path d="M0 -28 C10 -14 10 10 0 28 C-10 10 -10 -14 0 -28Z" fill="#9bb394"/>
+      <path d="M0 -24 L0 24" stroke="#7d9675" stroke-width="1" fill="none"/>
+    </symbol>
+  </defs>
+</svg>
 
 <script>
 /* =====================================================================
@@ -117,42 +303,39 @@
    ===================================================================== */
 const INVITACION = {
   // Texto general
-  tipoEvento: "Mis XV Años",          // Ej: "Mis XV Años", "Boda", "Bautizo"
-  festejada: "Nombre de la festejada",  // Nombre que aparece en grande
-  textoIntro: "Acompáñame a celebrar",
+  tipoEvento: "Mis XV Años",
+  nombre: "Ivanna Roshelle",              // Se muestra en script
+  apellidos: "Fajardo Murillo",           // Se muestra en mayúsculas
+  textoIntro: "Con amor y gratitud, te invito a celebrar mis XV años",
+  monograma: "IF",                        // Iniciales del monograma
 
   // Fecha y hora
-  fecha: "",                          // Formato ISO para la cuenta regresiva. Ej: "2027-01-16T20:00:00-05:00"
-  fechaTexto: "Fecha por confirmar",  // Como se muestra. Ej: "Sábado 16 de enero de 2027"
-  horaTexto: "",                      // Ej: "8:00 PM"
+  fecha: "2026-12-21T14:00:00-05:00",     // Cuenta regresiva (zona horaria Ecuador)
+  fechaTexto: "Lunes 21 de diciembre de 2026",
+  horaTexto: "2:00 PM",
 
-  // Padres / anfitriones
-  padres: "",                         // Ej: "Mateo Valenzuela Ríos & Sofía Benítez Cordero"
-  textoPadres: "En compañía de Dios y",
+  // Padres (opcional)
+  textoPadres: "Con la bendición de mis padres",
+  padres: "",                             // Ej: "Nombre del papá & Nombre de la mamá"
 
   // Lugar
-  lugar: "Lugar por confirmar",       // Ej: "Jardín & Casona Los Olivos"
-  direccion: "",                      // Ej: "Navolato, Sinaloa"
-  urlMapa: "",                        // Enlace de Google Maps (opcional)
-
-  // Recepción y vestimenta (opcional)
-  recepcionHora: "",                  // Ej: "08:00 PM"
-  codigoVestimenta: "",               // Ej: "Formal"
-  notaFinal: "",                      // Ej: "Favor de confirmar antes del 1 de enero"
+  lugar: "Lugar por confirmar",           // Ej: "Jardín & Casona Los Olivos"
+  direccion: "",                          // Ej: "Navolato, Sinaloa"
+  ubicacionUrl: "",                       // Opcional: enlace exacto de Google Maps. Si está vacío, se busca por lugar y dirección
+  codigoVestimenta: "Formal",
 
   // Confirmación de asistencia
-  urlConfirmacion: "",                // Enlace a tu Google Form o formulario
-
-  // Logo o monograma
-  logoUrl: "",                        // Enlace de imagen. Si está vacío, se usan las iniciales.
-  monograma: "",                      // Iniciales. Si está vacío, se generan con la festejada
+  fechaLimiteConfirmacion: "",            // Ej: "Confirma antes del 1 de diciembre de 2026"
+  whatsappNumero: "",                     // Número con código de país, sin + ni espacios. Ej: "593999999999"
+  mensajeWhatsapp: "Hola, confirmo mi asistencia a los XV años de Ivanna Roshelle",
 
   // Colores (formato hexadecimal)
   colores: {
-    fondo: "#f7ecea",
-    rosa: "#c98a8a",
-    texto: "#6b3f45",
-    acento: "#b5555f"
+    fondo: "#fbf5f2",
+    rosa: "#d9a0a0",
+    rosaIntenso: "#b5656b",
+    dorado: "#c9a46a",
+    texto: "#5a3a40"
   },
 
   // Invitado personalizado: si el enlace termina en ?invitado=Nombre, lo muestra
@@ -166,42 +349,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const root = document.documentElement.style;
   root.setProperty("--fondo", c.colores.fondo);
   root.setProperty("--rosa", c.colores.rosa);
+  root.setProperty("--rosa-intenso", c.colores.rosaIntenso);
+  root.setProperty("--dorado", c.colores.dorado);
   root.setProperty("--texto", c.colores.texto);
-  root.setProperty("--acento", c.colores.acento);
 
   const $ = (id) => document.getElementById(id);
-  const ocultarVacio = (id, valor) => {
+  const mostrarTexto = (id, valor) => {
     const el = $(id);
     if (!el) return;
     if (!valor) el.classList.add("oculto");
     else el.textContent = valor;
   };
 
-  // Logo o monograma
-  const iniciales = c.monograma || c.festejada.split(" ").filter(Boolean).slice(0, 2).map(p => p[0]).join("").toUpperCase();
-  if (c.logoUrl) {
-    $("logo").src = c.logoUrl;
-    $("monograma").classList.add("oculto");
-  } else {
-    $("logo").classList.add("oculto");
-    $("monograma").textContent = iniciales;
-  }
+  // Monograma
+  $("monograma").textContent = c.monograma || "";
+  $("monograma").classList.toggle("oculto", !c.monograma);
 
-  ocultarVacio("tipo", c.tipoEvento);
-  ocultarVacio("intro", c.textoIntro);
-  ocultarVacio("festejada", c.festejada);
-  ocultarVacio("fechaTexto", c.fechaTexto);
-  ocultarVacio("horaTexto", c.horaTexto);
-  ocultarVacio("textoPadres", c.padres ? c.textoPadres : "");
-  ocultarVacio("padres", c.padres);
-  ocultarVacio("lugar", c.lugar);
-  ocultarVacio("direccion", c.direccion);
-  ocultarVacio("recepcionHora", c.recepcionHora);
-  ocultarVacio("codigoVestimenta", c.codigoVestimenta);
-  ocultarVacio("notaFinal", c.notaFinal);
-
-  if (c.urlMapa) $("btnMapa").href = c.urlMapa; else $("btnMapa").classList.add("oculto");
-  if (c.urlConfirmacion) $("btnConfirmar").href = c.urlConfirmacion; else $("btnConfirmar").classList.add("oculto");
+  mostrarTexto("tipo", c.tipoEvento);
+  mostrarTexto("intro", c.textoIntro);
+  mostrarTexto("nombre", c.nombre);
+  mostrarTexto("apellidos", c.apellidos);
+  mostrarTexto("fechaTextoPortada", c.fechaTexto);
+  mostrarTexto("fechaTexto", c.fechaTexto);
+  mostrarTexto("horaTexto", c.horaTexto);
+  mostrarTexto("textoPadres", c.padres ? c.textoPadres : "");
+  mostrarTexto("padres", c.padres);
+  mostrarTexto("lugar", c.lugar);
+  mostrarTexto("direccion", c.direccion);
+  mostrarTexto("codigoVestimenta", c.codigoVestimenta ? "Código de vestimenta: " + c.codigoVestimenta : "");
+  mostrarTexto("fechaLimite", c.fechaLimiteConfirmacion);
 
   // Invitado personalizado
   const params = new URLSearchParams(window.location.search);
@@ -219,17 +395,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const actualizar = () => {
       const diff = destino - Date.now();
       if (diff <= 0) {
-        bloqueCuenta.innerHTML = "<p class='texto'>¡Llegó el gran día!</p>";
+        bloqueCuenta.innerHTML = "<p class='texto-italica'>¡Llegó el gran día!</p>";
         return;
       }
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor(diff / 3600000) % 24;
-      const m = Math.floor(diff / 60000) % 60;
-      const s = Math.floor(diff / 1000) % 60;
-      $("dias").textContent = String(d).padStart(2, "0");
-      $("horas").textContent = String(h).padStart(2, "0");
-      $("minutos").textContent = String(m).padStart(2, "0");
-      $("segundos").textContent = String(s).padStart(2, "0");
+      $("dias").textContent = String(Math.floor(diff / 86400000)).padStart(2, "0");
+      $("horas").textContent = String(Math.floor(diff / 3600000) % 24).padStart(2, "0");
+      $("minutos").textContent = String(Math.floor(diff / 60000) % 60).padStart(2, "0");
+      $("segundos").textContent = String(Math.floor(diff / 1000) % 60).padStart(2, "0");
     };
     actualizar();
     setInterval(actualizar, 1000);
@@ -237,45 +409,95 @@ document.addEventListener("DOMContentLoaded", function () {
     bloqueCuenta.classList.add("oculto");
   }
 
-  // Animación de aparición al hacer scroll
+  // QR de ubicación
+  const urlUbicacion = c.ubicacionUrl ||
+    (c.lugar && !c.lugar.toLowerCase().includes("por confirmar")
+      ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent([c.lugar, c.direccion].filter(Boolean).join(", "))
+      : "");
+
+  // QR de WhatsApp
+  const urlWhatsapp = c.whatsappNumero
+    ? "https://wa.me/" + c.whatsappNumero + "?text=" + encodeURIComponent(c.mensajeWhatsapp)
+    : "";
+
+  function pintarQR(canvasId, pendienteId, texto, enlaceId, enlaceUrl) {
+    const canvas = $(canvasId);
+    const pendiente = $(pendienteId);
+    if (!texto) {
+      canvas.classList.add("oculto");
+      pendiente.classList.remove("oculto");
+      return;
+    }
+    pendiente.classList.add("oculto");
+    canvas.classList.remove("oculto");
+    if (window.QRCode) {
+      QRCode.toCanvas(canvas, texto, {
+        width: 170,
+        margin: 1,
+        color: { dark: c.colores.texto, light: "#ffffff" }
+      }, function (err) { if (err) console.error(err); });
+    }
+    if (enlaceId) {
+      $(enlaceId).href = enlaceUrl;
+    }
+  }
+
+  pintarQR("qrUbicacion", "qrUbicacionPendiente", urlUbicacion, "btnMapa", urlUbicacion);
+  pintarQR("qrWhatsapp", "qrWhatsappPendiente", urlWhatsapp, "btnWhatsapp", urlWhatsapp);
+  if (!urlUbicacion) $("btnMapa").classList.add("oculto");
+  if (!urlWhatsapp) $("btnWhatsapp").classList.add("oculto");
+
+  // Aparición al hacer scroll
   const secciones = document.querySelectorAll(".seccion");
   const obs = new IntersectionObserver((entradas) => {
     entradas.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.15 });
   secciones.forEach(s => obs.observe(s));
-  // Muestra la primera sección de inmediato
   secciones[0].classList.add("visible");
 });
 </script>
 
 <!-- 1. PORTADA -->
 <section class="seccion">
-  <div class="tarjeta">
-    <img id="logo" class="logo" alt="Logo" src="">
-    <div id="monograma" class="monograma"></div>
+  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#hoja" x="20" y="60" width="40" height="60" transform="rotate(-60 40 90)" style="color:#9bb394"/><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#flor" x="70" y="40" width="50" height="50" style="color:#f1d9d6"/><use href="#capullo" x="40" y="80" width="30" height="45" transform="rotate(20 55 100)" style="color:#b5656b"/></svg></div>
+  <div class="flores tr"><svg viewBox="0 0 200 200"><use href="#hoja" x="20" y="60" width="40" height="60" transform="rotate(-60 40 90)" style="color:#9bb394"/><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#flor" x="70" y="40" width="50" height="50" style="color:#f1d9d6"/><use href="#capullo" x="40" y="80" width="30" height="45" transform="rotate(20 55 100)" style="color:#b5656b"/></svg></div>
+  <div class="flores bl"><svg viewBox="0 0 200 200"><use href="#hoja" x="20" y="60" width="40" height="60" transform="rotate(-60 40 90)" style="color:#9bb394"/><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#flor" x="70" y="40" width="50" height="50" style="color:#f1d9d6"/><use href="#capullo" x="40" y="80" width="30" height="45" transform="rotate(20 55 100)" style="color:#b5656b"/></svg></div>
+  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#hoja" x="20" y="60" width="40" height="60" transform="rotate(-60 40 90)" style="color:#9bb394"/><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#flor" x="70" y="40" width="50" height="50" style="color:#f1d9d6"/><use href="#capullo" x="40" y="80" width="30" height="45" transform="rotate(20 55 100)" style="color:#b5656b"/></svg></div>
+
+  <div class="marco">
+    <div id="monograma" class="monograma-txt oculto"></div>
     <p id="tipo" class="pequeno"></p>
-    <p id="intro" class="texto"></p>
-    <h1 id="festejada" class="nombre"></h1>
-    <p id="invitado" class="texto"></p>
+    <h1 class="titulo-script">Mis XV Años</h1>
+    <p id="intro" class="texto-italica"></p>
+    <div class="separador">✿</div>
+    <p id="nombre" class="nombre-script"></p>
+    <p id="apellidos" class="apellidos"></p>
+    <p id="fechaTextoPortada" class="texto" style="margin-top:14px"></p>
+    <p id="invitado" class="invitado"></p>
   </div>
 </section>
 
 <!-- 2. PADRES -->
 <section class="seccion">
-  <div class="tarjeta">
-    <p id="textoPadres" class="texto"></p>
-    <p id="padres" class="nombre" style="font-size:36px"></p>
+  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
+  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
+  <div class="marco">
+    <p id="textoPadres" class="texto-italica"></p>
+    <p id="padres" class="nombre-script" style="font-size:38px"></p>
   </div>
 </section>
 
 <!-- 3. FECHA Y CUENTA REGRESIVA -->
 <section class="seccion">
-  <div class="tarjeta">
+  <div class="flores tr"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#capullo" x="60" y="70" width="30" height="45" transform="rotate(-20 75 90)" style="color:#b5656b"/></svg></div>
+  <div class="flores bl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#capullo" x="60" y="70" width="30" height="45" transform="rotate(-20 75 90)" style="color:#b5656b"/></svg></div>
+  <div class="marco">
     <p class="pequeno">Fecha</p>
-    <p id="fechaTexto" class="nombre" style="font-size:36px"></p>
+    <p id="fechaTexto" class="fecha-grande"></p>
     <p id="horaTexto" class="texto"></p>
     <div id="cuenta">
-      <div class="separador"></div>
+      <div class="separador">✿</div>
+      <p class="pequeno" style="margin-top:0">Faltan</p>
       <div class="contador">
         <div><span id="dias">--</span><small>Días</small></div>
         <div><span id="horas">--</span><small>Horas</small></div>
@@ -286,24 +508,52 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </section>
 
-<!-- 4. LUGAR -->
+<!-- 4. LUGAR Y UBICACIÓN (QR GPS) -->
 <section class="seccion">
-  <div class="tarjeta">
-    <p class="pequeno">Lugar</p>
-    <h2 id="lugar" class="nombre" style="font-size:38px"></h2>
+  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/></svg></div>
+  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/></svg></div>
+  <div class="marco">
+    <p class="pequeno">Lugar de la celebración</p>
+    <h2 id="lugar" class="nombre-script" style="font-size:40px"></h2>
     <p id="direccion" class="texto"></p>
-    <p id="recepcionHora" class="texto"></p>
     <p id="codigoVestimenta" class="texto"></p>
-    <a id="btnMapa" class="boton secundario" href="#" target="_blank" rel="noopener">Ver ubicación</a>
+    <div class="qr-bloque">
+      <canvas id="qrUbicacion" class="oculto"></canvas>
+      <div id="qrUbicacionPendiente" class="qr-pendiente">QR de ubicación<br>pendiente</div>
+      <p class="qr-etiqueta">Escanea para ver la ubicación</p>
+    </div>
+    <a id="btnMapa" class="boton secundario" href="#" target="_blank" rel="noopener">Abrir en Maps</a>
   </div>
 </section>
 
-<!-- 5. CONFIRMACIÓN -->
+<!-- 5. CONFIRMACIÓN (QR WHATSAPP) -->
 <section class="seccion">
-  <div class="tarjeta">
-    <p class="texto">Confirma tu asistencia</p>
-    <p id="notaFinal" class="texto"></p>
-    <a id="btnConfirmar" class="boton" href="#" target="_blank" rel="noopener">Confirmar asistencia</a>
+  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
+  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/><use href="#hoja" x="60" y="70" width="40" height="60" transform="rotate(30 80 100)" style="color:#9bb394"/></svg></div>
+  <div class="marco">
+    <p class="pequeno">Confirma tu asistencia</p>
+    <p class="texto">Será un honor contar con tu presencia.</p>
+    <p id="fechaLimite" class="texto-italica"></p>
+    <div class="qr-bloque">
+      <canvas id="qrWhatsapp" class="oculto"></canvas>
+      <div id="qrWhatsappPendiente" class="qr-pendiente">QR de WhatsApp<br>pendiente</div>
+      <p class="qr-etiqueta">Escanea para confirmar por WhatsApp</p>
+    </div>
+    <a id="btnWhatsapp" class="boton" href="#" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+  </div>
+</section>
+
+<!-- 6. CIERRE -->
+<section class="seccion">
+  <div class="flores tl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/></svg></div>
+  <div class="flores tr"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/></svg></div>
+  <div class="flores bl"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/></svg></div>
+  <div class="flores br"><svg viewBox="0 0 200 200"><use href="#flor" x="10" y="10" width="80" height="80" style="color:#d9a0a0"/></svg></div>
+  <div class="marco">
+    <p class="titulo-script" style="font-size:52px">¡Te esperamos!</p>
+    <div class="separador">✿</div>
+    <p class="apellidos" style="font-size:18px">Ivanna Roshelle</p>
+    <p class="pie">21 · 12 · 2026</p>
   </div>
 </section>
 
