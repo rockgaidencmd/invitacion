@@ -465,25 +465,43 @@
       <path d="M-12 22 C-16 10 -10 2 0 6 C-4 12 -6 18 -12 22Z" fill="#9bb394"/>
       <path d="M12 22 C16 10 10 2 0 6 C4 12 6 18 12 22Z" fill="#9bb394"/>
     </symbol>
+    <radialGradient id="gRosa" cx="45%" cy="40%" r="70%">
+      <stop offset="0" stop-color="#fff7f4"/><stop offset=".45" stop-color="#f2c4bb"/><stop offset="1" stop-color="#c97f82"/>
+    </radialGradient>
+    <radialGradient id="gRosaCentro" cx="50%" cy="50%" r="60%">
+      <stop offset="0" stop-color="#fbe2d6"/><stop offset="1" stop-color="#e09a94"/>
+    </radialGradient>
+    <linearGradient id="gCinta" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7dcd6"/><stop offset=".5" stop-color="#e4b3ad"/><stop offset="1" stop-color="#c58c8c"/>
+    </linearGradient>
+    <radialGradient id="gEucalipto" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#d6e4cf"/><stop offset="1" stop-color="#8fa987"/>
+    </radialGradient>
+    <symbol id="rosa" viewBox="-50 -50 100 100">
+      <circle r="40" fill="url(#gRosa)" stroke="#b5656b" stroke-opacity=".3"/>
+      <path d="M-34 -6 Q-30 -30 -4 -32 M30 10 Q34 30 8 34 M-30 18 Q-14 36 14 30" stroke="#b5656b" stroke-opacity=".25" fill="none" stroke-width="1.5"/>
+      <circle r="26" fill="url(#gRosaCentro)" opacity=".95"/>
+      <path d="M-14 0 Q-14 -14 0 -14 Q14 -14 14 0 Q14 12 0 12 Q-9 12 -9 3 Q-9 -6 0 -6" stroke="#b5656b" stroke-opacity=".45" stroke-width="1.3" fill="none"/>
+      <circle r="4" fill="#c97f82" opacity=".6"/>
+    </symbol>
     <symbol id="ramo" viewBox="0 0 200 200">
-      <path d="M4 4 C30 50 60 90 110 120" stroke="#7d9675" stroke-width="2" fill="none"/>
-      <path d="M4 4 C20 40 30 70 45 100" stroke="#7d9675" stroke-width="1.5" fill="none"/>
-      <path d="M4 4 C50 20 90 30 150 40" stroke="#7d9675" stroke-width="1.5" fill="none"/>
-      <use href="#hoja" x="18" y="34" width="26" height="40" transform="rotate(-35 31 54)"/>
-      <use href="#hoja" x="48" y="26" width="26" height="40" transform="rotate(40 61 46)"/>
-      <use href="#hoja" x="60" y="70" width="26" height="40" transform="rotate(-20 73 90)"/>
-      <use href="#hoja" x="100" y="20" width="26" height="40" transform="rotate(80 113 40)"/>
-      <use href="#hoja" x="120" y="100" width="22" height="34" transform="rotate(-60 131 117)"/>
-      <use href="#capullo" x="78" y="96" width="22" height="34" transform="rotate(-25 89 113)" style="color:#e8b4b4"/>
-      <use href="#capullo" x="30" y="78" width="20" height="30" transform="rotate(10 40 93)" style="color:#b5656b"/>
-      <use href="#flor" x="-14" y="-14" width="70" height="70" style="color:#d9a0a0"/>
-      <use href="#flor" x="38" y="34" width="46" height="46" style="color:#f1d9d6"/>
-      <use href="#flor" x="88" y="6" width="36" height="36" style="color:#e8b4b4"/>
-      <use href="#flor" x="110" y="104" width="34" height="34" style="color:#f1d9d6"/>
-      <circle cx="70" cy="70" r="3" fill="#fff" opacity=".9"/>
-      <circle cx="26" cy="58" r="2.5" fill="#fff" opacity=".9"/>
-      <circle cx="135" cy="72" r="2.5" fill="#fff" opacity=".9"/>
-      <circle cx="94" cy="140" r="3" fill="#fff" opacity=".9"/>
+      <path d="M6 6 C30 50 60 90 112 124" stroke="#7d9675" stroke-width="2" fill="none"/>
+      <path d="M6 6 C22 40 34 74 48 104" stroke="#7d9675" stroke-width="1.5" fill="none"/>
+      <path d="M6 6 C52 22 92 30 152 40" stroke="#7d9675" stroke-width="1.5" fill="none"/>
+      <ellipse cx="26" cy="34" rx="9" ry="16" fill="url(#gEucalipto)" transform="rotate(-40 26 34)"/>
+      <ellipse cx="46" cy="26" rx="9" ry="16" fill="url(#gEucalipto)" transform="rotate(30 46 26)"/>
+      <ellipse cx="62" cy="62" rx="9" ry="16" fill="url(#gEucalipto)" transform="rotate(-25 62 62)"/>
+      <ellipse cx="104" cy="22" rx="8" ry="14" fill="url(#gEucalipto)" transform="rotate(70 104 22)"/>
+      <ellipse cx="84" cy="96" rx="8" ry="14" fill="url(#gEucalipto)" transform="rotate(-60 84 96)"/>
+      <use href="#rosa" x="-16" y="-16" width="64" height="64"/>
+      <use href="#rosa" x="44" y="30" width="52" height="52"/>
+      <use href="#rosa" x="92" y="4" width="36" height="36"/>
+      <use href="#rosa" x="104" y="100" width="34" height="34"/>
+      <path d="M50 104 L40 136 L52 130 L58 144 L66 110 Z" fill="url(#gCinta)" opacity=".95"/>
+      <path d="M50 104 Q62 92 74 104 Q62 116 50 104Z" fill="url(#gCinta)"/>
+      <circle cx="72" cy="72" r="2.5" fill="#fff" opacity=".9"/>
+      <circle cx="28" cy="62" r="2" fill="#fff" opacity=".9"/>
+      <circle cx="138" cy="72" r="2.5" fill="#fff" opacity=".9"/>
     </symbol>
     <symbol id="hoja" viewBox="-10 -30 20 40">
       <path d="M0 -28 C10 -14 10 10 0 28 C-10 10 -10 -14 0 -28Z" fill="url(#gHoja)"/>
