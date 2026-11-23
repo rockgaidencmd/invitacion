@@ -382,8 +382,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 56px;
-    height: 46px;
+    width: 64px;
+    height: 51px;
     z-index: 5;
     pointer-events: none;
     transition: transform .5s ease-out;
@@ -392,7 +392,7 @@
   .mariposa svg { width: 100%; height: 100%; filter: drop-shadow(0 4px 6px rgba(90,58,64,.25)); }
   .ala {
     transform-box: view-box;
-    transform-origin: 30px 25px;
+    transform-origin: 40px 32px;
     animation: aletear .5s ease-in-out infinite alternate;
   }
   @keyframes aletear {
@@ -418,16 +418,46 @@
 <!-- Ornamentos reutilizables (flor, capullo y hoja) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <radialGradient id="gPetalo" cx="50%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#fff5f3"/><stop offset=".5" stop-color="#eeb5b5"/><stop offset="1" stop-color="#c26a74"/>
+    </radialGradient>
+    <radialGradient id="gPetaloClaro" cx="50%" cy="40%" r="70%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f3c9c4"/>
+    </radialGradient>
+    <radialGradient id="gCentro" cx="40%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#f7e1a6"/><stop offset="1" stop-color="#b8903f"/>
+    </radialGradient>
+    <linearGradient id="gHoja" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c3dbb0"/><stop offset="1" stop-color="#5f7d55"/>
+    </linearGradient>
+    <radialGradient id="gAla" cx="30%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#fbe3e3"/><stop offset=".6" stop-color="#d98c97"/><stop offset="1" stop-color="#a4505c"/>
+    </radialGradient>
+    <radialGradient id="gAlaInf" cx="40%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#fdf3ef"/><stop offset="1" stop-color="#e3aca8"/>
+    </radialGradient>
+    <linearGradient id="gCuerpo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a2428"/><stop offset=".5" stop-color="#7a4d56"/><stop offset="1" stop-color="#3a2428"/>
+    </linearGradient>
     <symbol id="flor" viewBox="-50 -50 100 100">
-      <g fill="currentColor" opacity=".85">
-        <ellipse cx="0" cy="-20" rx="13" ry="22"/>
-        <ellipse cx="0" cy="-20" rx="13" ry="22" transform="rotate(72)"/>
-        <ellipse cx="0" cy="-20" rx="13" ry="22" transform="rotate(144)"/>
-        <ellipse cx="0" cy="-20" rx="13" ry="22" transform="rotate(216)"/>
-        <ellipse cx="0" cy="-20" rx="13" ry="22" transform="rotate(288)"/>
+      <g fill="url(#gPetalo)" stroke="#b5656b" stroke-opacity=".35" stroke-width="1">
+        <ellipse cx="0" cy="-26" rx="16" ry="26"/>
+        <ellipse cx="0" cy="-26" rx="16" ry="26" transform="rotate(60)"/>
+        <ellipse cx="0" cy="-26" rx="16" ry="26" transform="rotate(120)"/>
+        <ellipse cx="0" cy="-26" rx="16" ry="26" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-26" rx="16" ry="26" transform="rotate(240)"/>
+        <ellipse cx="0" cy="-26" rx="16" ry="26" transform="rotate(300)"/>
       </g>
-      <circle r="9" fill="#c9a46a"/>
-      <circle r="4" fill="#fbf5f2"/>
+      <g fill="url(#gPetaloClaro)" opacity=".92">
+        <ellipse cx="0" cy="-16" rx="11" ry="17" transform="rotate(30)"/>
+        <ellipse cx="0" cy="-16" rx="11" ry="17" transform="rotate(90)"/>
+        <ellipse cx="0" cy="-16" rx="11" ry="17" transform="rotate(150)"/>
+        <ellipse cx="0" cy="-16" rx="11" ry="17" transform="rotate(210)"/>
+        <ellipse cx="0" cy="-16" rx="11" ry="17" transform="rotate(270)"/>
+        <ellipse cx="0" cy="-16" rx="11" ry="17" transform="rotate(330)"/>
+      </g>
+      <circle r="10" fill="url(#gCentro)"/>
+      <circle r="3" fill="#8a6a3a" opacity=".6"/>
     </symbol>
     <symbol id="capullo" viewBox="-20 -30 40 60">
       <path d="M0 26 C-10 10 -10 -10 0 -24 C10 -10 10 10 0 26Z" fill="currentColor" opacity=".9"/>
@@ -455,7 +485,7 @@
       <circle cx="94" cy="140" r="3" fill="#fff" opacity=".9"/>
     </symbol>
     <symbol id="hoja" viewBox="-10 -30 20 40">
-      <path d="M0 -28 C10 -14 10 10 0 28 C-10 10 -10 -14 0 -28Z" fill="#9bb394"/>
+      <path d="M0 -28 C10 -14 10 10 0 28 C-10 10 -10 -14 0 -28Z" fill="url(#gHoja)"/>
       <path d="M0 -24 L0 24" stroke="#7d9675" stroke-width="1" fill="none"/>
     </symbol>
   </defs>
@@ -463,19 +493,28 @@
 
 <!-- Mariposa que se mueve según el desplazamiento de la página -->
 <div id="mariposa" class="mariposa" aria-hidden="true">
-  <svg viewBox="0 0 60 50">
+  <svg viewBox="0 0 80 64">
     <g class="ala">
-      <path d="M30 25 C20 2 2 4 4 18 C5 28 18 32 30 25Z" fill="#d9a0a0" stroke="#b5656b" stroke-width="1"/>
-      <path d="M30 25 C18 30 8 44 18 47 C26 49 30 36 30 25Z" fill="#f1d9d6" stroke="#b5656b" stroke-width="1"/>
+      <path d="M40 32 C28 4 4 2 4 18 C4 30 22 36 40 32Z" fill="url(#gAla)" stroke="#9c4a56" stroke-width=".8"/>
+      <path d="M40 32 C28 24 16 18 8 16" stroke="#9c4a56" stroke-width=".5" fill="none" opacity=".6"/>
+      <circle cx="15" cy="20" r="5" fill="#fbe3e3" stroke="#9c4a56" stroke-width=".6"/>
+      <circle cx="15" cy="20" r="2" fill="#5a3a40"/>
+      <path d="M40 34 C30 36 14 40 16 52 C18 60 32 56 40 36Z" fill="url(#gAlaInf)" stroke="#9c4a56" stroke-width=".8"/>
+      <circle cx="24" cy="46" r="1.5" fill="#fff" opacity=".8"/>
     </g>
     <g class="ala">
-      <path d="M30 25 C40 2 58 4 56 18 C55 28 42 32 30 25Z" fill="#d9a0a0" stroke="#b5656b" stroke-width="1"/>
-      <path d="M30 25 C42 30 52 44 42 47 C34 49 30 36 30 25Z" fill="#f1d9d6" stroke="#b5656b" stroke-width="1"/>
+      <path d="M40 32 C52 4 76 2 76 18 C76 30 58 36 40 32Z" fill="url(#gAla)" stroke="#9c4a56" stroke-width=".8"/>
+      <path d="M40 32 C52 24 64 18 72 16" stroke="#9c4a56" stroke-width=".5" fill="none" opacity=".6"/>
+      <circle cx="65" cy="20" r="5" fill="#fbe3e3" stroke="#9c4a56" stroke-width=".6"/>
+      <circle cx="65" cy="20" r="2" fill="#5a3a40"/>
+      <path d="M40 34 C50 36 66 40 64 52 C62 60 48 56 40 36Z" fill="url(#gAlaInf)" stroke="#9c4a56" stroke-width=".8"/>
+      <circle cx="56" cy="46" r="1.5" fill="#fff" opacity=".8"/>
     </g>
-    <ellipse cx="30" cy="25" rx="1.8" ry="9" fill="#5a3a40"/>
-    <path d="M29 16 Q26 8 22 6 M31 16 Q34 8 38 6" stroke="#5a3a40" stroke-width="1" fill="none"/>
-    <circle cx="13" cy="16" r="2.5" fill="#c9a46a"/>
-    <circle cx="47" cy="16" r="2.5" fill="#c9a46a"/>
+    <ellipse cx="40" cy="32" rx="2.4" ry="13" fill="url(#gCuerpo)"/>
+    <path d="M38 22 H42 M38 28 H42 M38 36 H42" stroke="#3a2428" stroke-width=".5" opacity=".6"/>
+    <path d="M39 20 Q34 10 28 8 M41 20 Q46 10 52 8" stroke="#5a3a40" stroke-width=".8" fill="none"/>
+    <circle cx="28" cy="8" r="1.4" fill="#c9a46a"/>
+    <circle cx="52" cy="8" r="1.4" fill="#c9a46a"/>
   </svg>
 </div>
 
