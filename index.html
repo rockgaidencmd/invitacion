@@ -128,12 +128,23 @@
   }
   @keyframes aparecer { to { opacity: 1; transform: none; } }
   .monograma-txt {
-    animation: entrada-monograma 1.6s cubic-bezier(.2,.7,.2,1) both;
+    animation: entrada-monograma 2.4s cubic-bezier(.22,.61,.36,1) both;
+  }
+  .monograma-txt::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 1px;
+    margin: 4px auto 0;
+    background: linear-gradient(90deg, transparent, var(--dorado), transparent);
+    animation: linea-dorada 1.4s ease 2s forwards;
   }
   @keyframes entrada-monograma {
-    from { opacity: 0; transform: scale(.4) rotate(-12deg); }
-    to   { opacity: 1; transform: none; }
+    from { opacity: 0; filter: blur(12px); transform: translateY(18px) scale(.92); letter-spacing: .25em; }
+    60%  { filter: blur(0); }
+    to   { opacity: 1; filter: blur(0); transform: none; letter-spacing: normal; }
   }
+  @keyframes linea-dorada { to { width: 70px; } }
   .destello {
     position: absolute;
     z-index: 3;
@@ -460,6 +471,7 @@
     .flores, .musica.sonando, .destello, .titulo-script, .monograma-txt { animation: none; }
     .letra { animation: none; opacity: 1; transform: none; }
     .ala, .ala2 { animation: none; }
+    .monograma-txt::after { animation: none; width: 70px; }
     .seccion { transition: none; }
   }
   @media (max-width: 380px) {
